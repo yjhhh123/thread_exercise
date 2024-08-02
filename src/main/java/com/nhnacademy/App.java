@@ -14,11 +14,7 @@ package com.nhnacademy;
 
 import com.nhnacademy.thread.CounterThread;
 
-/**
- * Hello world!
- *
- */
-public class App 
+public class App
 {
     public static void main( String[] args )
     {
