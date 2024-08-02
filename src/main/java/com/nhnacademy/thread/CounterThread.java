@@ -15,7 +15,7 @@ package com.nhnacademy.thread;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class CounterThread {
+public class CounterThread extends Thread {
     private final String name;
     private final long countMaxSize;
 
@@ -27,11 +27,16 @@ public class CounterThread {
         this.count = 0;
     }
 
-    public void run() throws InterruptedException {
+    @Override
+    public void run() {
         do {
-            Thread.sleep(1000);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             count++;
-            log.debug("count:{}",count);
+            log.debug("thread:{},count:{}",name,count);
         }while (count<countMaxSize);
     }
 }

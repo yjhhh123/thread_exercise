@@ -23,10 +23,6 @@ public class App
     public static void main( String[] args )
     {
         CounterThread counterThread = new CounterThread("my-counter",10);
-        try {
-            counterThread.run();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        counterThread.start();
     }
 }
