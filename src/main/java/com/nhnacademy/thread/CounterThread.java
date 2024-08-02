@@ -10,23 +10,28 @@
  * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  */
 
-package com.nhnacademy;
+package com.nhnacademy.thread;
 
-import com.nhnacademy.thread.CounterThread;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        CounterThread counterThread = new CounterThread("my-counter",10);
-        try {
-            counterThread.run();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+@Slf4j
+public class CounterThread {
+    private final String name;
+    private final long countMaxSize;
+
+    private long count;
+
+    public CounterThread(String name, long countMaxSize) {
+        this.name = name;
+        this.countMaxSize = countMaxSize;
+        this.count = 0;
+    }
+
+    public void run() throws InterruptedException {
+        do {
+            Thread.sleep(1000);
+            count++;
+            log.debug("count:{}",count);
+        }while (count<countMaxSize);
     }
 }
