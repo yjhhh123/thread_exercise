@@ -15,23 +15,29 @@ package com.nhnacademy.thread;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class CounterThread {
-    private final String name;
+public class Counter {
     private final long countMaxSize;
-
     private long count;
 
-    public CounterThread(String name, long countMaxSize) {
-        this.name = name;
+    public Counter(long countMaxSize) {
+
+        if(countMaxSize <=0){
+            throw new IllegalArgumentException();
+        }
+
         this.countMaxSize = countMaxSize;
-        this.count = 0;
+        this.count = 0l;
     }
 
-    public void run() throws InterruptedException {
+    public void run()  {
         do {
-            Thread.sleep(1000);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             count++;
-            log.debug("count:{}",count);
+            log.debug("name:{},count:{}",Thread.currentThread().getName(),count);
         }while (count<countMaxSize);
     }
 }

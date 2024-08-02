@@ -12,7 +12,7 @@
 
 package com.nhnacademy;
 
-import com.nhnacademy.thread.CounterThread;
+import com.nhnacademy.thread.Counter;
 
 /**
  * Hello world!
@@ -20,13 +20,9 @@ import com.nhnacademy.thread.CounterThread;
  */
 public class App 
 {
-    public static void main( String[] args )
-    {
-        CounterThread counterThread = new CounterThread("my-counter",10);
-        try {
-            counterThread.run();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    public static void main( String[] args ) throws InterruptedException {
+        Thread.currentThread().setName("my-thread");
+        Counter counter = new Counter(10);
+        counter.run();
     }
 }
