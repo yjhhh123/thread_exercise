@@ -20,16 +20,20 @@ public class App
 {
     public static void main( String[] args )
     {
-        //TODO#4 CounterHandler 객체를 생성 합니다. countMaxSize : 10
         CounterHandler counterHandler = new CounterHandler(10l);
-
-        //TODO#5 thread 생성시 counterHandler 객체를 paramter로 전달 합니다.
         Thread thread = new Thread(counterHandler);
-        log.debug("thread-state:{}",thread.getState());
-        //TODO#6 thread의 name을 my-counter로 설정 합니다.
-        thread.setName("my-counter");
+        log.debug("threa-state:{}",thread.getState());
 
-        //TODO#7 thread를 시작 합니다.
+        thread.setName("my-counter");
         thread.start();
+        //TODO#1 thread가 실행 후 (1-10 count 증가 후  아래 로그가 출력 됩니다.)
+        //thread.join()을 호출 하면 thread가 종료될 때 까지 main thread가 대기하게 됩니다.
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        log.debug("Application exit!");
+        log.debug("thread-state:{}",thread.getState());
     }
 }
