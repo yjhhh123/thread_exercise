@@ -44,6 +44,7 @@ public class App
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        log.debug("threadA-state:{}",threadA.getState());
 
         //TODO#9 threadB를 시작 합니다.
         threadB.start();
@@ -53,11 +54,9 @@ public class App
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        log.debug("threadB-state:{}",threadB.getState());
 
         //TODO#11 'Application exit!' message를 출력 합니다.
         log.debug("Application exit!");
-
-        log.debug("threadA-state:{}",threadA.getState());
-        log.debug("threadB-state:{}",threadB.getState());
     }
 }
