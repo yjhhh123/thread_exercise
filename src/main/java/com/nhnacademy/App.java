@@ -20,7 +20,7 @@ import com.nhnacademy.thread.Counter;
  */
 public class App 
 {
-    public static void main( String[] args ) throws InterruptedException {
+    public static void main( String[] args ){
         Thread.currentThread().setName("my-thread");
         Counter counter = new Counter(10);
         counter.run();

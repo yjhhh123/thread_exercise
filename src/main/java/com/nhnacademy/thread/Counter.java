@@ -29,7 +29,7 @@ public class Counter {
         this.count = 0l;
     }
 
-    public void run()  {
+    public void run() {
         do {
             try {
                 Thread.sleep(1000);
