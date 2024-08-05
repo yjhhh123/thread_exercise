@@ -22,7 +22,7 @@ public class App
     {
         CounterHandler counterHandler = new CounterHandler(10l);
         Thread thread = new Thread(counterHandler);
-        log.debug("threa-state:{}",thread.getState());
+        log.debug("thread-state:{}",thread.getState());
 
         thread.setName("my-counter");
         thread.start();
