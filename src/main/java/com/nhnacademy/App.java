@@ -13,7 +13,9 @@
 package com.nhnacademy;
 
 import com.nhnacademy.thread.CounterHandler;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class App
 {
     public static void main( String[] args )
@@ -23,7 +25,7 @@ public class App
 
         //TODO#5 thread 생성시 counterHandler 객체를 paramter로 전달 합니다.
         Thread thread = new Thread(counterHandler);
-
+        log.debug("thread-state:{}",thread.getState());
         //TODO#6 thread의 name을 my-counter로 설정 합니다.
         thread.setName("my-counter");
 
