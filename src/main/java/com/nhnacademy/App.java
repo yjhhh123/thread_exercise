@@ -26,6 +26,7 @@ public class App
         Thread threadA = new Thread(counterHandlerA);
         //TODO#3 threadA의 name을 'my-counter-A' 로 설정 합니다.
         threadA.setName("my-counter-A");
+        log.debug("threadA-state:{}",threadA.getState());
 
         //TODO#4 counterHandlerB 객체를 생성 합니다. countMaxSize : 10
         CounterHandler counterHandlerB = new CounterHandler(10l);
@@ -33,6 +34,7 @@ public class App
         Thread threadB = new Thread(counterHandlerB);
         //TODO#6 threadB의 name을 'my-counter-B' 로 설정 합니다.
         threadB.setName("my-counter-B");
+        log.debug("threadB-state:{}",threadB.getState());
 
         //TODO#7 threadA를 시작 합니다.
         threadA.start();
@@ -54,5 +56,8 @@ public class App
 
         //TODO#11 'Application exit!' message를 출력 합니다.
         log.debug("Application exit!");
+
+        log.debug("threadA-state:{}",threadA.getState());
+        log.debug("threadB-state:{}",threadB.getState());
     }
 }
