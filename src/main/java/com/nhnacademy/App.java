@@ -21,8 +21,12 @@ import com.nhnacademy.thread.Counter;
 public class App 
 {
     public static void main( String[] args ){
-        Thread.currentThread().setName("my-thread");
-        Counter counter = new Counter(10);
-        counter.run();
+
+        //TODO#6 현재 실행되고 있는 main thread의 이름을 my-thread로 설정 합니다.
+        //참고.main thread : Thread.currentThread()
+        Thread main = Thread.currentThread();
+
+        //TODO#7 Counter 생성, countMaxSize는 10으로 설정 후 run method를 호출 합니다.
+
     }
 }
