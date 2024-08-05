@@ -14,27 +14,16 @@ package com.nhnacademy.thread;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Objects;
-
 @Slf4j
-public class CounterThread extends Thread {
+public class CounterHandler implements Runnable {
+
     private final long countMaxSize;
 
     private long count;
 
-    public CounterThread(String name, long countMaxSize) {
-
-        if(Objects.isNull(name) || name.isEmpty() ){
-            throw new IllegalArgumentException();
-        }
-
-        if(countMaxSize <=0){
-            throw new IllegalArgumentException();
-        }
-
-        this.setName(name);
+    public CounterHandler(long countMaxSize) {
         this.countMaxSize = countMaxSize;
-        this.count = 0;
+        this.count=0l;
     }
 
     @Override
@@ -46,7 +35,7 @@ public class CounterThread extends Thread {
                 throw new RuntimeException(e);
             }
             count++;
-            log.debug("thread:{},count:{}",this.getName(),count);
+            log.debug("thread:{},count:{}",Thread.currentThread().getName(),count);
         }while (count<countMaxSize);
     }
 }

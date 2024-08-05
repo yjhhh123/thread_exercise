@@ -12,13 +12,15 @@
 
 package com.nhnacademy;
 
-import com.nhnacademy.thread.CounterThread;
+import com.nhnacademy.thread.CounterHandler;
 
 public class App
 {
     public static void main( String[] args )
     {
-        CounterThread counterThread = new CounterThread("my-counter",10);
-        counterThread.start();
+        CounterHandler counterHandler = new CounterHandler(10l);
+        Thread thread = new Thread(counterHandler);
+        thread.setName("my-counter");
+        thread.start();
     }
 }
