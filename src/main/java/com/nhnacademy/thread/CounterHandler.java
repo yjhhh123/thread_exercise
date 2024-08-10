@@ -34,10 +34,14 @@ public class CounterHandler implements Runnable  {
     public void run() {
 
         do {
+            if(Thread.interrupted()){
+                break;
+            }
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                break;
+                //throw new RuntimeException(e);
             }
             count++;
             log.debug("thread:{},state:{},count:{}",Thread.currentThread().getName(),Thread.currentThread().getState(),count);
