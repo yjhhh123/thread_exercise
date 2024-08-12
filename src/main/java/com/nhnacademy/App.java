@@ -15,41 +15,53 @@ package com.nhnacademy;
 import com.nhnacademy.thread.CounterHandler;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.management.monitor.CounterMonitor;
+import javax.management.monitor.Monitor;
+
 @Slf4j
 public class App
 {
+
+    //TODO#1 monitor로 사용한 객체를 생성 합니다.
+    public static Object monitor = new Object();
+
     public static void main( String[] args )
     {
-        //counterHandlerA 객체를 생성 합니다. countMaxSize : 10
-        CounterHandler counterHandlerA = new CounterHandler(10l);
+
+        //TODO#2 counterHandlerA 객체를 생성 합니다. countMaxSize : 10, monitor
+        CounterHandler counterHandlerA = new CounterHandler(10l,monitor);
+
         //threadA 생성시 counterHandlerA 객체를 paramter로 전달 합니다.
         Thread threadA = new Thread(counterHandlerA);
+
         //threadA의 name을 'my-counter-A' 로 설정 합니다.
         threadA.setName("my-counter-A");
         log.debug("threadA-state:{}",threadA.getState());
-
-        //counterHandlerB 객체를 생성 합니다. countMaxSize : 10
-        CounterHandler counterHandlerB = new CounterHandler(10l);
-        //threadB 생성시 counterHandlerB 객체를 paramter로 전달 합니다.
-        Thread threadB = new Thread(counterHandlerB);
-        //threadB의 name을 'my-counter-B' 로 설정 합니다.
-        threadB.setName("my-counter-B");
-        log.debug("threadB-state:{}",threadB.getState());
 
         //threadA를 시작 합니다.
         threadA.start();
         log.debug("threadA-state:{}",threadA.getState());
 
-        //threadB를 시작 합니다.
-        threadB.start();
-        log.debug("threadB-state:{}",threadB.getState());
+        //TODO#2 - Main Thread에서 2초 후 monitor를 이용하여 대기하고 있는 threadA를 깨움 니다.
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
-        //TODO#1 Main Thread가 threadA, ThreadB가 종료될 때 까지 대기 합니다. Thread.yield를 사용 합니다.
+        synchronized (monitor){
+            log.debug("call monitor.notify()");
+            monitor.notify();
+        }
+
+        //Main Thread가 threadA  종료될 때 까지 대기 합니다. Thread.yield를 사용 합니다.
         do {
             Thread.yield();
-        }while (threadA.isAlive() || threadB.isAlive() );
+        }while (threadA.isAlive());
+
         //'Application exit!' message를 출력 합니다.
         log.debug("Application exit!");
 
     }
+
 }
