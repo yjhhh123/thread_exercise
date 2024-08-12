@@ -12,14 +12,42 @@
 
 package com.nhnacademy;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Hello world!
  *
  */
+
+@Slf4j
 public class App 
 {
+
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        ShardCounter shardCounter = new ShardCounter(1000l);
+
+        Runnable increase = ()->{
+            while(!Thread.currentThread().isInterrupted()) {
+                long count = shardCounter.increaseAndGet();
+                log.debug("thread:{}, count:{}", Thread.currentThread().getName(), count);
+            }
+        };
+
+        Thread threadA = new Thread(()->{
+
+        });
+        threadA.setName("thread-A");
+        threadA.start();
+
+        Thread threadB = new Thread();
+        threadB.setName("thread-B");
+        threadB.start();
+
+        try {
+            Thread.currentThread().join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
