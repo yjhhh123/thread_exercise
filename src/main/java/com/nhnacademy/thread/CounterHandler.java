@@ -22,29 +22,18 @@ public class CounterHandler implements Runnable  {
     private long count;
 
     public CounterHandler(long countMaxSize, Object monitor) {
-        //TODO#3 countMaxSize<=0 or monitor 객체가 null 이면 IllegalArgumentException이 발생 합니다.
-        if(countMaxSize<=0){
-            throw new IllegalArgumentException();
-        }
+        //TODO#4 countMaxSize<=0 or monitor 객체가 null 이면 IllegalArgumentException이 발생 합니다.
 
-        //TODO#4  countMaxSize, count, monitor 변수를 초기화 합니다.
-        this.countMaxSize = countMaxSize;
-        this.count=0l;
-        this.monitor = monitor;
+
+        //TODO#5  countMaxSize, count, monitor 변수를 초기화 합니다.
+
     }
 
     @Override
     public void run() {
-        //TODO#5 Thread에 의해서 run() method가 호출되면 무한 대기 합니다. monitor객체를 이용해서 구현하세요
+        //TODO#6 Thread에 의해서 run() method가 호출되면 무한 대기 합니다. monitor객체를 이용해서 구현하세요
         //monitor는 여러 Thread가 동시에 접근할 수 없도록  접근을 제어해야 합니다.
 
-        synchronized (monitor){
-            try {
-                monitor.wait();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
 
         do {
             try {
