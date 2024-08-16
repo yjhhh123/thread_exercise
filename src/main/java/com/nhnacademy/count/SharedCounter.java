@@ -12,14 +12,14 @@
 
 package com.nhnacademy.count;
 
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class SharedCounter {
     private long count;
-    private Semaphore semaphore;
+    private final ReentrantLock mutex;
 
     public SharedCounter(){
-        count =0l;
+        this(0l);
     }
 
     public SharedCounter(long count) {
@@ -27,55 +27,55 @@ public class SharedCounter {
             throw new IllegalArgumentException("count > 0 ");
         }
         this.count = count;
-        //TODO#1-1 semaphore를 생성 합니다.( 동시에 하나의 Thread만 접근할 수 있습니다. ), permits prameter를 확인하세요.
-        semaphore = new Semaphore(1);
+        //TODO#1-1 ReentrantLock 생성 합니다.( mutex는 동시에 하나의 Thread만 접근할 수 있습니다. )
+        mutex = new ReentrantLock();
     }
 
     public long getCount(){
         /*TODO#1-2 count 를 반환 합니다.
-            semaphore.acquire()를 호출하여 허가를 획득 합니다.
+            mutex.lock()를 호출하여 다른 thread가 접근할 수 없도록 lock을 걸어 줍니다.
             쓰레드가 작업이 완료되면
-            semaphore.release()를 호출하여
-            허가를 반환 합니다.
+            mutex.unlock()를 호출하여
+            잠금을 해제 합니다. 뮤텍스는 lock을 건 쓰레드만 lock을 해제할 수 있습니다.
          */
 
         try {
-            semaphore.acquire();
+            mutex.lock();
             return count;
-        } catch (InterruptedException e) {
+        } catch (Exception e){
             throw new RuntimeException(e);
         }finally {
-            semaphore.release();
+            mutex.unlock();
         }
     }
 
     public long increaseAndGet(){
         /* TODO#1-3 count = count + 1 증가시키고 count를 반환 합니다.
-           1-2 처럼 semaphore를 이용해서 동기화할 수 있도록 구현 합니다.
+           1-2 처럼 mutex를 이용해서 동기화 될 수 있도록 구현 합니다.
         */
         try {
-            semaphore.acquire();
+            mutex.lock();
             count = count + 1;
             return count;
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }finally {
-            semaphore.release();
+            mutex.unlock();
         }
     }
 
     public long decreaseAndGet(){
         /*TODO#1-4 count = count-1 감소시키고 count를 반환 합니다.
-          1-2 처럼 semaphore를 이용해서 동기화할 수 있도록 구현 합니다.
+          1-2 처럼 mutex를 이용해서 동기화 될 수 있도록 구현 합니다.
         */
         try {
-            semaphore.acquire();
+            mutex.lock();
             count = count - 1;
             return count;
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }finally {
-            semaphore.release();
+            mutex.unlock();
         }
     }
 }
