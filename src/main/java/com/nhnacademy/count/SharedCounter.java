@@ -38,7 +38,6 @@ public class SharedCounter {
             mutex.unlock()를 호출하여
             잠금을 해제 합니다. 뮤텍스는 lock을 건 쓰레드만 lock을 해제할 수 있습니다.
          */
-
         return count;
     }
 
