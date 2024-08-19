@@ -27,8 +27,10 @@ public class SharedCounter {
             throw new IllegalArgumentException("count > 0 ");
         }
         this.count = count;
-        //TODO#1-1 ReentrantLock 생성 합니다.( mutex는 동시에 하나의 Thread만 접근할 수 있습니다. )
-        mutex = new ReentrantLock();
+        /*TODO#1-1 ReentrantLock 생성 합니다.( mutex는 동시에 하나의 Thread만 접근할 수 있습니다. )
+           ReentrantLock은 기본적으로 비공정한 락 입니다. 공정성을 보장 하도록 초기화 합니다.
+         */
+        mutex = new ReentrantLock(true);
     }
 
     public long getCount(){
