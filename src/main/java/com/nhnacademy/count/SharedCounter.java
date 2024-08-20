@@ -16,7 +16,7 @@ public class SharedCounter {
     private long count;
 
     public SharedCounter(){
-        count =0l;
+        this(0l);
     }
 
     public SharedCounter(long count) {
@@ -27,22 +27,24 @@ public class SharedCounter {
         this.count = count;
     }
 
-    public long getCount(){
-        //TODO#1-2 count 를 반환 합니다.
+    //TODO#1-2 mehtod 단위 lock을 걸고, count 를 반환 합니다.
+    public synchronized long getCount(){
         return count;
     }
 
     public long increaseAndGet(){
-        //TODO#1-3 count = count + 1 증가시키고 count를 반환 합니다.
+        //TODO#1-3 block 단위로 lock을 걸고 count = count + 1 증가시키고 count를 반환 합니다.
         synchronized (this) {
             count = count + 1;
+            return count;
         }
-        return count;
     }
 
     public long decreaseAndGet(){
-        //TODO#1-4 count = count-1 감소시키고 count를 반환 합니다.
-        count = count - 1;
+        //TODO#1-4 count = count -1  부분 lock을 걸고, count를 반환 합니다.
+        synchronized (this) {
+            count = count - 1;
+        }
         return count;
     }
 }
