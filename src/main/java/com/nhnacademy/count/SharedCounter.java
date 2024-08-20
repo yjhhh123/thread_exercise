@@ -12,7 +12,14 @@
 
 package com.nhnacademy.count;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class SharedCounter {
+
+    private final Object lock1 = new Object();
+    private final Object lock2 = new Object();
+
     private long count;
 
     public SharedCounter(){
@@ -34,17 +41,24 @@ public class SharedCounter {
 
     public long increaseAndGet(){
         //TODO#1-3 block 단위로 lock을 걸고 count = count + 1 증가시키고 count를 반환 합니다.
-        synchronized (this) {
+        synchronized (lock1) {
             count = count + 1;
+            synchronized (lock2){
+                log.debug("hold and wait;");
+            }
             return count;
         }
     }
 
     public long decreaseAndGet(){
         //TODO#1-4 count = count -1  부분 lock을 걸고, count를 반환 합니다.
-        synchronized (this) {
+        synchronized (lock2) {
             count = count - 1;
+            synchronized (lock1){
+                log.debug("hold and wait");
+            }
+            return count;
         }
-        return count;
     }
+
 }
