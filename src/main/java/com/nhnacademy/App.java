@@ -16,6 +16,8 @@ import com.nhnacademy.count.SharedCounter;
 import com.nhnacademy.thread.CounterIncreaseHandler;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Map;
+
 @Slf4j
 public class App 
 {
@@ -23,40 +25,56 @@ public class App
     public static void main( String[] args )
     {
 
-        //shardCounter 객체를 0으로 초기화 합니다.
+        //TODO#1 shardCounter 객체를 0으로 초기화 합니다.
         SharedCounter sharedCounter = new SharedCounter(0l);
 
-        //counterIncreaseHandler 객체를 생성 합니다.
+        //TODO#2 counterIncreaseHandler 객체를 생성 합니다.
         CounterIncreaseHandler counterIncreaseHandler = new CounterIncreaseHandler(sharedCounter);
-        //counterIncreaseHandler를 이용해서 threadA를 생성 합니다.
-        Thread threadA = new Thread(counterIncreaseHandler);
-        //threadA의 thread name을 "thread-A"로 설정 합니다.
-        threadA.setName("thread-A");
-        //threadA를 시작 합니다.
+
+        //TODO#3 counterIncreaseHandler를 이용해서 threadA ~ E 를 생성 합니다.
+        Thread threadA = new Thread(counterIncreaseHandler, "thread-A");
+        Thread threadB = new Thread(counterIncreaseHandler, "thread-B");
+        Thread threadC = new Thread(counterIncreaseHandler, "thread-C");
+        Thread threadD = new Thread(counterIncreaseHandler, "thread-D");
+        Thread threadE = new Thread(counterIncreaseHandler, "thread-E");
+
+        //TODO#4 thrad의 우선순위를 지정할 수 있지만, 실질적인 관리는 운영체제에서 함으로, 동작하는 순서는 다를 수 있습니다.
+        threadA.setPriority(10);
+        threadB.setPriority(1);
+        threadC.setPriority(1);
+        threadD.setPriority(1);
+        threadE.setPriority(1);
+
+        //TODO#5 threadA ~ E 를 시작 합니다.
         threadA.start();
-
-        //counterIncreaseHandler를 이용해서 threadB를 생성 합니다.
-        Thread threadB = new Thread(counterIncreaseHandler);
-        //threadB의 name을 'thread-B' 로 설정 합니다.
-        threadB.setName("thread-B");
-
-        //threadB를 시작 합니다.
         threadB.start();
+        threadC.start();
+        threadD.start();
+        threadE.start();
 
-        //main thread가 실행 후 20초 후 threadA, threadB 종료될 수 있도록 interrupt 발생 시킵니다.
+        //TODO#6 main thread가 실행 후 10초 후 threadA, threadB 종료될 수 있도록 interrupt 발생 시킵니다.
         try {
-            Thread.sleep(20000);
+            Thread.sleep(10000);
             threadA.interrupt();
             threadB.interrupt();
+            threadC.interrupt();
+            threadD.interrupt();
+            threadE.interrupt();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        //main Thread는 threadA와 threadB의 상태가 terminated가 될 때 까지 대기 합니다. 즉 threadA, threadB가 종료될 때 까지 대기(양보) 합니다.
-        while (threadA.isAlive() && threadB.isAlive()){
+        //TODO#7 main Thread는 threadA와 threadB의 상태가 terminated가 될 때 까지 대기 합니다. 즉 threadA, threadB가 종료될 때 까지 대기(양보) 합니다.
+        while (threadA.isAlive() && threadB.isAlive() && threadC.isAlive() && threadD.isAlive() && threadE.isAlive() ){
             Thread.yield();
         }
 
+        Map<String, Long> result = counterIncreaseHandler.getThreadHistory();
+        result.forEach((k,v)->{
+            log.debug("{}:{}",k,v);
+        });
+
         log.debug("System exit!");
+
     }
 }

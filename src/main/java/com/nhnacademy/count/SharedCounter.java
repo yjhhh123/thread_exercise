@@ -13,6 +13,7 @@
 package com.nhnacademy.count;
 
 public class SharedCounter {
+
     private long count;
 
     public SharedCounter(){
@@ -33,6 +34,7 @@ public class SharedCounter {
     }
 
     public long increaseAndGet(){
+
         //TODO#1-3 block 단위로 lock을 걸고 count = count + 1 증가시키고 count를 반환 합니다.
         synchronized (this) {
             count = count + 1;
@@ -47,4 +49,5 @@ public class SharedCounter {
         }
         return count;
     }
+
 }
