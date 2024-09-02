@@ -14,10 +14,6 @@ package com.nhnacademy.thread;
 
 import com.nhnacademy.count.SharedCounter;
 import lombok.extern.slf4j.Slf4j;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
