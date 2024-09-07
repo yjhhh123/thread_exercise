@@ -10,36 +10,35 @@
  * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  */
 
-package com.nhnacademy;
+package com.nhnacademy.livelock;
 
-import com.nhnacademy.livelock.Counter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        Counter counter = new Counter();
+@Slf4j
+public class Counter {
+    private int count = 0;
+    private final Lock lock = new ReentrantLock();
 
-        Runnable task = () -> {
-            while (counter.getCount() < 10) {
-                counter.increment();
+    public void increment() {
+        while (true) {
+            if (lock.tryLock()) {
+                try {
+                    count++;
+                    log.debug("{} count++ : {}", Thread.currentThread().getName(), count );
+                    break;
+                } finally {
+                    lock.unlock();
+                }
+            } else {
+                log.debug("{} lock 획득 시도...", Thread.currentThread().getName());
             }
-        };
-
-        Thread threadA = new Thread(task, "counter-A");
-        Thread threadB = new Thread(task, "counter-B");
-
-        threadA.start();
-        threadB.start();
+        }
     }
 
-
-
+    public int getCount() {
+        return count;
+    }
 }
