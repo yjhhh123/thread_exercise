@@ -21,35 +21,44 @@ public class App
 {
 
     public static void main( String[] args )
-    {
+        {
 
-        //TODO#1 shardCounter 객체를 0으로 초기화 합니다.
-        SharedCounter sharedCounter = null;
+            //TODO#1 shardCounter 객체를 0으로 초기화 합니다.
+            SharedCounter sharedCounter = new SharedCounter(0);
 
-        //TODO#2 counterIncreaseHandler 객체를 생성 합니다.
-        CounterIncreaseHandler counterIncreaseHandler = null;
+            //TODO#2 counterIncreaseHandler 객체를 생성 합니다.
+            CounterIncreaseHandler counterIncreaseHandler = new CounterIncreaseHandler(sharedCounter);
 
-        //TODO#3 counterIncreaseHandler를 이용해서 threadA를 생성 합니다.
-        Thread threadA = null;
+            //TODO#3 counterIncreaseHandler를 이용해서 threadA를 생성 합니다.
+            Thread threadA = new Thread(counterIncreaseHandler);
 
-        //TODO#4 threadA의 thread name을 "thread-A"로 설정 합니다.
+            //TODO#4 threadA의 thread name을 "thread-A"로 설정 합니다.
+            threadA.setName("threadA");
+            //TODO#5 threadA를 시작 합니다.
+            threadA.start();
 
-        //TODO#5 threadA를 시작 합니다.
+            //TODO#6 counterIncreaseHandler를 이용해서 threadB를 생성 합니다.
+            Thread threadB = new Thread(counterIncreaseHandler);
 
+            //TODO#7 threadB의 name을 'thread-B' 로 설정 합니다.
+            threadB.setName("threadB");
+            //TODO#8 threadB를 시작 합니다.
+            threadB.start();
+            //TODO#9 main thread가 실행 후 20초 후 threadA, threadB 종료될 수 있도록 interrupt 발생 시킵니다.
+            try{
+                Thread.sleep(20000);
+                threadA.interrupt();
+                threadB.interrupt();
+            }
+            catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
-        //TODO#6 counterIncreaseHandler를 이용해서 threadB를 생성 합니다.
-        Thread threadB = null;
+            //TODO#10 main Thread는 threadA와 threadB의 상태가 terminated가 될 때 까지 대기 합니다. 즉 threadA, threadB가 종료될 때 까지 대기(양보) 합니다.
+            while(threadA.isAlive() && threadB.isAlive()){
+                Thread.yield();
+            }
 
-        //TODO#7 threadB의 name을 'thread-B' 로 설정 합니다.
-
-        //TODO#8 threadB를 시작 합니다.
-
-        //TODO#9 main thread가 실행 후 20초 후 threadA, threadB 종료될 수 있도록 interrupt 발생 시킵니다.
-
-
-        //TODO#10 main Thread는 threadA와 threadB의 상태가 terminated가 될 때 까지 대기 합니다. 즉 threadA, threadB가 종료될 때 까지 대기(양보) 합니다.
-
-
-        log.debug("System exit!");
-    }
+            log.debug("System exit!");
+        }
 }
